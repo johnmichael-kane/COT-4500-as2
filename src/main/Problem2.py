@@ -1,37 +1,27 @@
 import numpy as np
 import math
 
-def newtons_forward_method(x, f_x):
-    # Calculate step size
-    h = x[1] - x[0]
+x = np.array([7.2, 7.4, 7.5, 7.6])
+f_x = np.array([23.5492, 25.3913, 26.8224, 27.4589])
 
-    # Calculate differences
-    n = len(f_x)
-    diff_table = np.zeros((n, n))
-    diff_table[:, 0] = f_x
+#Create a diff table:
+n=len(x)
+diff_table=np.zeros((n, n))
+diff_table[:, 0] = f_x
 
-    for j in range(1, n):
-        for i in range(n-j):
-            diff_table[i, j] = diff_table[i+1, j-1] - diff_table[i, j-1]
+for j in range(1, n):
+    for i in range(n-j):
+        diff_table[i, j] = (diff_table[i+1, j-1] - diff_table[i, j-1]) / (x[i + j] - x[i])
 
-    # Coefficients for the polynomial
-    coefficients = [diff_table[0, 0]]  # f(a)
-    for degree in range(1, n):
-        coefficient = diff_table[0, degree] / (h**degree * math.factorial(degree))
-        coefficients.append(coefficient)
+#c is the coefficients
+#maybe move this code around for a bit
+c = [diff_table[0, i] for i in range(n)]
 
-    # Print the coefficients for polynomials of degree 1, 2, and 3
-    for degree in range(1, 4):
-        print(f"Polynomial of degree {degree}:")
-        print(f"({', '.join([f'{coefficients[i]}' for i in range(degree + 1)])})\n")
+d1, d2, d3=c[1:]
+
 
 def main():
-    # Given data
-    x = np.array([7.2, 7.4, 7.5, 7.6])
-    f_x = np.array([23.5492, 25.3913, 26.8224, 27.4589])
+  for i in c[1:]: print(i)
 
-    # Call the function
-    newtons_forward_method(x, f_x)
-
-# Instead of using if __name__ == "__main__":
-main()
+if __name__ == "__main__":
+  main()
